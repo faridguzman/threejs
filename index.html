@@ -13,10 +13,11 @@
 
 <body>
     <script src="js/three.js"></script>
-    <script>
+    <script name="spinning_cube">
         // Our Javascript will go here.
         const scene = new THREE.Scene(); //create scene
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); //setup camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1,
+            1000); //setup camera
 
         const renderer = new THREE.WebGLRenderer(); //setup browsewr renderer
 
@@ -29,7 +30,8 @@
         //For example, setSize(window.innerWidth/2, window.innerHeight/2, false) will render your app at half resolution, 
         //given that your <canvas> has 100% width and height.
 
-        document.body.appendChild(renderer.domElement); //the renderer element to our HTML document. This is a <canvas> element the renderer uses to display the scene to us.
+        document.body.appendChild(renderer
+            .domElement); //the renderer element to our HTML document. This is a <canvas> element the renderer uses to display the scene to us.
 
         //To create a cube, we need a BoxGeometry. 
         //This is an object that contains all the points (vertices) and fill (faces) of the cube. 
@@ -39,7 +41,8 @@
             color: 0x00ff00 //In addition to the geometry, we need a material to color it.
         });
 
-        const cube = new THREE.Mesh(geometry, material); //The third thing we need is a Mesh. A mesh is an object that takes a geometry, 
+        const cube = new THREE.Mesh(geometry,
+            material); //The third thing we need is a Mesh. A mesh is an object that takes a geometry, 
         //and applies a material to it, which we then can insert to our scene, and move freely around.
 
         scene.add(cube);
@@ -58,6 +61,76 @@
 
         animate();
     </script>
+
+    <!--drawing lines-->
+
+    <script name="lines">
+        //	First we need to set up the renderer, scene and camera (see the Creating a scene page).
+        // Here is the code that we will use:
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+        camera.position.set(0, 0, 100);
+        camera.lookAt(0, 0, 0);
+
+        const scene = new THREE.Scene();
+
+        //Next thing we will do is define a material. For lines we have to use LineBasicMaterial or LineDashedMaterial.
+
+        const material = new THREE.LineBasicMaterial({
+            color: 0x0000ff
+        });
+
+        //After material we will need a geometry with some vertices: 
+
+        const points = [];
+        points.push(new THREE.Vector3(-10, 0, 0));
+        points.push(new THREE.Vector3(0, 10, 0));
+        points.push(new THREE.Vector3(10, 0, 0));
+
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        //Now that we have points for two lines and a material, we can put them together to form a line.
+
+        const line = new THREE.Line(geometry, material);
+
+        //All that's left is to add it to the scene and call *render*.
+
+        scene.add(line);
+        renderer.render(scene, camera);
+    </script>
+
+    <!--creating text-->
+
+    <div id="info">Description</div>
+    <script>
+        //you can create a mesh whose geometry is an instance of THREE.TextGeometry: 
+        new THREE.TextGeometry(text, parameters);
+
+        const loader = new THREE.FontLoader();
+
+        //TextGeometry will need an instance of THREE.Font to be set on its "font" parameter. 
+
+        loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
+
+            const geometry = new THREE.TextGeometry('Description', {
+                font: font,
+                size: 80,
+                height: 5,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 10,
+                bevelSize: 8,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>
