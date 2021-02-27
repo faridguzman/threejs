@@ -1,30 +1,63 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ThreeJS Course</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
-    <script src="/js/three.min.js"></script>
+    <title>My first three.js app</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
+    <script src="js/three.js"></script>
+    <script>
+        // Our Javascript will go here.
+        const scene = new THREE.Scene(); //create scene
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); //setup camera
 
+        const renderer = new THREE.WebGLRenderer(); //setup browsewr renderer
 
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        //setup canvas size of render (For performance intensive apps, 
+        //you can also give setSize smaller values, like window.innerWidth/2 and window.innerHeight/2, 
+        //which will make the app render at half size.)
+        //If you wish to keep the size of your app but render it at a lower resolution, 
+        //you can do so by calling setSize with false as updateStyle (the third argument). 
+        //For example, setSize(window.innerWidth/2, window.innerHeight/2, false) will render your app at half resolution, 
+        //given that your <canvas> has 100% width and height.
 
-    <script src="" async defer></script>
+        document.body.appendChild(renderer.domElement); //the renderer element to our HTML document. This is a <canvas> element the renderer uses to display the scene to us.
+
+        //To create a cube, we need a BoxGeometry. 
+        //This is an object that contains all the points (vertices) and fill (faces) of the cube. 
+
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00 //In addition to the geometry, we need a material to color it.
+        });
+
+        const cube = new THREE.Mesh(geometry, material); //The third thing we need is a Mesh. A mesh is an object that takes a geometry, 
+        //and applies a material to it, which we then can insert to our scene, and move freely around.
+
+        scene.add(cube);
+
+        camera.position.z = 5;
+
+        //rendering the scene
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            //This will be run every frame (normally 60 times per second), and give the cube a nice rotation animation.
+            renderer.render(scene, camera);
+        } //a loop that causes the renderer to draw the scene every time the screen is refreshed (on a typical screen this means 60 times per second).
+
+        animate();
+    </script>
 </body>
 
 </html>
